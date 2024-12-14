@@ -1,7 +1,9 @@
 "use client";
-import React from "react";
 
-const list = ["Products", "Categories", "Carts", "Reciper", "Posts"];
+import React from "react";
+import Link from "next/link";
+
+const list = ["products", "carts", "reciper", "posts"];
 
 export default function Header() {
   return (
@@ -84,7 +86,9 @@ export default function Header() {
             d="M6.78 270.5v-27.12h498.37l.03.05.07 50.12c-8.8-.53-16.35-5.65-20.32-12.99-4.2 7.76-12.41 13.04-21.85 13.04-9.44 0-17.65-5.28-21.85-13.04-4.2 7.76-12.41 13.04-21.85 13.04-6.93 0-13.19-2.84-17.69-7.42-4.8 4.58-11.11 7.42-16.96 7.42-11.57 0-17.65-5.28-21.85-13.04-4.19 7.76-12.61 13.04-21.85 13.04-6.4 0-21.26-5.95-21.26-12.87-10.62 19.31-39.82 16.11-45.7-5.4-5.9 21.58-35.25 24.73-45.79 5.23-9.32 17.24-34.38 17.24-43.7 0-9.32 17.24-34.38 17.24-43.7 0-9.32 17.24-34.38 17.24-43.7 0-9.32 17.24-34.38 17.24-43.7 0-4.19 7.76-10.27 13.04-21.85 13.04-11.08 0-23.8-10.2-24.85-23.1z"
           />
         </svg>
-        <h3 className="font-medium text-white ml-2 text-lg">SHOPPING LAND</h3>
+        <Link href={"/"}>
+          <h3 className="font-medium text-white ml-2 text-lg">SHOPPING LAND</h3>
+        </Link>
       </div>
       <div className="w-[100%] flex items-center justify-center">
         <input
@@ -94,11 +98,21 @@ export default function Header() {
       </div>
       <div className="flex items-center w-full">
         <nav className="w-[60%] flex flex-row justify-between">
+          <Link href={"/"} className="text-white font-medium uppercase">
+            HOME
+          </Link>
           {list.map((item, index) => (
-            <ul key={index} className="flex flex-row">
-              <li className="text-white font-medium uppercase">{item}</li>
-            </ul>
+            <Link key={index} href={{ pathname: `/pages/${item}` }}>
+              <ul className="flex flex-row">
+                <li className="text-white font-medium uppercase">{item}</li>
+              </ul>
+            </Link>
           ))}
+          {/* <ul className="flex flex-row text-white font-medium uppercase">
+            <Link href={"/"}>Home</Link>
+            <Link href={"/pages/products"}>Products</Link>
+            <Link href="/pages/carts">Carts</Link>
+          </ul> */}
         </nav>
         <div className="flex w-[30%] justify-around">
           <div className="flex items-center">
@@ -110,16 +124,18 @@ export default function Header() {
             </div>
             🌞
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 576 512"
-            width={32}
-            height={32}
-            color="#ffffff"
-            fill="currentcolor"
-          >
-            <path d="M253.3 35.1c6.1-11.8 1.5-26.3-10.2-32.4s-26.3-1.5-32.4 10.2L117.6 192 32 192c-17.7 0-32 14.3-32 32s14.3 32 32 32L83.9 463.5C91 492 116.6 512 146 512L430 512c29.4 0 55-20 62.1-48.5L544 256c17.7 0 32-14.3 32-32s-14.3-32-32-32l-85.6 0L365.3 12.9C359.2 1.2 344.7-3.4 332.9 2.7s-16.3 20.6-10.2 32.4L404.3 192l-232.6 0L253.3 35.1zM192 304l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-8.8 7.2-16 16-16s16 7.2 16 16zm96-16c8.8 0 16 7.2 16 16l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-8.8 7.2-16 16-16zm128 16l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-8.8 7.2-16 16-16s16 7.2 16 16z" />
-          </svg>
+          <Link href={"/pages/basket"}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 576 512"
+              width={32}
+              height={32}
+              color="#ffffff"
+              fill="currentcolor"
+            >
+              <path d="M253.3 35.1c6.1-11.8 1.5-26.3-10.2-32.4s-26.3-1.5-32.4 10.2L117.6 192 32 192c-17.7 0-32 14.3-32 32s14.3 32 32 32L83.9 463.5C91 492 116.6 512 146 512L430 512c29.4 0 55-20 62.1-48.5L544 256c17.7 0 32-14.3 32-32s-14.3-32-32-32l-85.6 0L365.3 12.9C359.2 1.2 344.7-3.4 332.9 2.7s-16.3 20.6-10.2 32.4L404.3 192l-232.6 0L253.3 35.1zM192 304l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-8.8 7.2-16 16-16s16 7.2 16 16zm96-16c8.8 0 16 7.2 16 16l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-8.8 7.2-16 16-16zm128 16l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-8.8 7.2-16 16-16s16 7.2 16 16z" />
+            </svg>
+          </Link>
         </div>
       </div>
     </header>
