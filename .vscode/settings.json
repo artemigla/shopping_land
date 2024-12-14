@@ -1,0 +1,7 @@
+{
+    "html-css-class-completion.enableEmmetSupport": false,
+    "emmet.includeLanguages": {
+        "\"javascript\"": "\"javascriptreact\""
+    },
+    "editor.fontSize": 14
+}
