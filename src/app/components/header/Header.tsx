@@ -1,13 +1,29 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Navbar from "../navbar/Navbar";
+import { AiOutlineSun, AiOutlineMoon, AiOutlineSearch, AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 
 export default function Header() {
+  const [isTheme, setIsTheme] = useState<boolean>(false);
+  const [isMobileMenu, setIsMobileMenu] = useState<boolean>(false);
+
+  const changeTheme = () => {
+    setIsTheme(() => !isTheme);
+  };
+  const openMenu = () => {
+    setIsMobileMenu(() => !isMobileMenu);
+  }
   return (
-    <header className="grid grid-cols-[25%,25%,50%] gap-4 w-full h-24 bg-slate-800">
-      <div className="flex items-center ml-2">
+    <header className="grid h-36 w-full grid-cols-2 bg-slate-800">
+      <Link
+        href={"/"}
+        className="relative ml-5 flex w-16 flex-col items-center justify-center"
+      >
+        <h3 className="text-responsive font-medium uppercase text-white">
+          SHOPPING
+        </h3>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           shapeRendering="geometricPrecision"
@@ -15,9 +31,8 @@ export default function Header() {
           imageRendering="optimizeQuality"
           fillRule="evenodd"
           clipRule="evenodd"
-          width={56}
-          height={56}
           viewBox="0 0 512 487.17"
+          className="w-14 xs:w-10 sm:w-12"
         >
           <path
             fill="#3E2E30"
@@ -85,35 +100,32 @@ export default function Header() {
             d="M6.78 270.5v-27.12h498.37l.03.05.07 50.12c-8.8-.53-16.35-5.65-20.32-12.99-4.2 7.76-12.41 13.04-21.85 13.04-9.44 0-17.65-5.28-21.85-13.04-4.2 7.76-12.41 13.04-21.85 13.04-6.93 0-13.19-2.84-17.69-7.42-4.8 4.58-11.11 7.42-16.96 7.42-11.57 0-17.65-5.28-21.85-13.04-4.19 7.76-12.61 13.04-21.85 13.04-6.4 0-21.26-5.95-21.26-12.87-10.62 19.31-39.82 16.11-45.7-5.4-5.9 21.58-35.25 24.73-45.79 5.23-9.32 17.24-34.38 17.24-43.7 0-9.32 17.24-34.38 17.24-43.7 0-9.32 17.24-34.38 17.24-43.7 0-9.32 17.24-34.38 17.24-43.7 0-4.19 7.76-10.27 13.04-21.85 13.04-11.08 0-23.8-10.2-24.85-23.1z"
           />
         </svg>
-        <Link href={"/"}>
-          <h3 className="font-medium text-white ml-2 text-lg">SHOPPING LAND</h3>
-        </Link>
-      </div>
-      <div className="w-[100%] flex items-center justify-center">
-        <input
-          type="text"
-          className="flex p-1 w-full font-medium outline-none"
-        />
-      </div>
-      <div className="relative flex items-center w-full">
-        <Navbar />
-        <div className="absolute flex w-[30%] right-12 justify-between">
-          <div className="flex items-center">
-            🌚
-            <div className="inline-block w-10">
-              <span className="border rounded-full border-sky-700 flex items-center cursor-pointer w-10 transition-all duration-300 ease-in-out pl-0">
-                <span className="rounded-full w-3 h-3 m-1 bg-sky-700"></span>
-              </span>
-            </div>
-            🌞
+        <h3 className="text-responsive font-medium uppercase text-white">
+          Land
+        </h3>
+      </Link>
+      <div className="grid grid-rows-2 relative">
+        <div className="flex  justify-around">
+          <div className="flex w-28 items-center ss:ml-0">
+            <AiOutlineSearch size={28} color="#FFF" />
           </div>
-          <div className="absolute flex top-[-4px] right-5">
-            <Link href={"/pages/basket"}>
+          <div
+            className="flex w-7 h-7 absolute right-12 top-8 ss:right-3 ss:top-6"
+            onClick={changeTheme}
+          >
+            
+            {isTheme ? <AiOutlineSun size={28} color="#FFF" /> : <AiOutlineMoon size={28} color="#FFF" />}
+          </div>
+        </div>
+
+        <div className="relative hidden w-full items-center tablet:flex">
+          <Navbar />
+          <div className="absolute right-5 flex w-[34%] justify-around">
+            <Link href={"/pages/basket"} className="flex">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 576 512"
-                width={32}
-                height={32}
+                className="w-8 h-8 tablet:w-6 tablet:h-6 laptop:w-7 laptop:h-7"
                 color="#ffffff"
                 fill="currentcolor"
               >
@@ -121,6 +133,9 @@ export default function Header() {
               </svg>
             </Link>
           </div>
+        </div>
+        <div className="w-7 h-7 right-3 absolute bottom-8 tablet:hidden" onClick={openMenu}>
+          {isMobileMenu ? <AiOutlineClose size={28} color="#FFF"/> : <AiOutlineMenu size={28} color="#FFF"/>}
         </div>
       </div>
     </header>

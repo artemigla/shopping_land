@@ -12,6 +12,19 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontSize: {
+        'responsive':'clamp(0.8rem, 1vw, 1.5rem)'
+      },
+      
+    },
+    screens: {
+      'ss': '300px',
+      'xs': '320px',
+      'sm': '480px',
+      'small': '512px',
+      'tablet': '640px',
+      'laptop': '1024px',
+      'desktop': '1280px',
     },
   },
   plugins: [],
