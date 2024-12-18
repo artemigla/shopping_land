@@ -1,8 +1,6 @@
-"use client"
-import React from 'react';
+"use client";
+import React from "react";
 
 export default function Carts() {
-  return (
-    <div>Carts</div>
-  )
+  return <div>Carts</div>;
 }

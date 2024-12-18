@@ -3,20 +3,28 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Navbar from "../navbar/Navbar";
-import { AiOutlineSun, AiOutlineMoon, AiOutlineSearch, AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import {
+  AiOutlineSun,
+  AiOutlineMoon,
+  AiOutlineSearch,
+  AiOutlineMenu,
+  AiOutlineClose,
+} from "react-icons/ai";
+import { useAppSelector, useAppDispatch } from "@/redux/hooks/hooks";
+import { toggleMenu } from "@/redux/store/menuSlice";
+import BurgerMenu from "../navbar/BurgerMenu";
 
 export default function Header() {
   const [isTheme, setIsTheme] = useState<boolean>(false);
-  const [isMobileMenu, setIsMobileMenu] = useState<boolean>(false);
+  const { isOpen } = useAppSelector((selector) => selector?.burgermenu);
+  const dispatch = useAppDispatch();
 
   const changeTheme = () => {
     setIsTheme(() => !isTheme);
   };
-  const openMenu = () => {
-    setIsMobileMenu(() => !isMobileMenu);
-  }
+
   return (
-    <header className="grid h-36 w-full grid-cols-2 bg-slate-800">
+    <header className="grid h-32 w-full grid-cols-2 bg-slate-500">
       <Link
         href={"/"}
         className="relative ml-5 flex w-16 flex-col items-center justify-center"
@@ -104,38 +112,51 @@ export default function Header() {
           Land
         </h3>
       </Link>
-      <div className="grid grid-rows-2 relative">
-        <div className="flex  justify-around">
-          <div className="flex w-28 items-center ss:ml-0">
-            <AiOutlineSearch size={28} color="#FFF" />
+      <div className="relative grid grid-rows-2">
+        <div className="relative flex items-center justify-around">
+          <div className="flex items-center justify-center">
+            <AiOutlineSearch size={28} color="#FFF" className="ml-16" />
           </div>
           <div
-            className="flex w-7 h-7 absolute right-12 top-8 ss:right-3 ss:top-6"
+            className="relative flex h-7 w-7 items-center justify-center"
             onClick={changeTheme}
           >
-            
-            {isTheme ? <AiOutlineSun size={28} color="#FFF" /> : <AiOutlineMoon size={28} color="#FFF" />}
+            {isTheme ? (
+              <AiOutlineMoon size={28} color="#FFF" />
+            ) : (
+              <AiOutlineSun size={28} color="#FFF" />
+            )}
           </div>
         </div>
-
-        <div className="relative hidden w-full items-center tablet:flex">
-          <Navbar />
-          <div className="absolute right-5 flex w-[34%] justify-around">
-            <Link href={"/pages/basket"} className="flex">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 576 512"
-                className="w-8 h-8 tablet:w-6 tablet:h-6 laptop:w-7 laptop:h-7"
-                color="#ffffff"
-                fill="currentcolor"
-              >
-                <path d="M253.3 35.1c6.1-11.8 1.5-26.3-10.2-32.4s-26.3-1.5-32.4 10.2L117.6 192 32 192c-17.7 0-32 14.3-32 32s14.3 32 32 32L83.9 463.5C91 492 116.6 512 146 512L430 512c29.4 0 55-20 62.1-48.5L544 256c17.7 0 32-14.3 32-32s-14.3-32-32-32l-85.6 0L365.3 12.9C359.2 1.2 344.7-3.4 332.9 2.7s-16.3 20.6-10.2 32.4L404.3 192l-232.6 0L253.3 35.1zM192 304l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-8.8 7.2-16 16-16s16 7.2 16 16zm96-16c8.8 0 16 7.2 16 16l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-8.8 7.2-16 16-16zm128 16l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-8.8 7.2-16 16-16s16 7.2 16 16z" />
-              </svg>
-            </Link>
+        {!isOpen ? (
+          <div className="relative hidden w-full items-center tablet:flex">
+            <Navbar />
+            <div className="absolute right-5 flex w-[34%] justify-around">
+              <Link href={"/pages/basket"} className="flex">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 576 512"
+                  className="h-8 w-8 tablet:h-6 tablet:w-6 laptop:h-7 laptop:w-7"
+                  color="#ffffff"
+                  fill="currentcolor"
+                >
+                  <path d="M253.3 35.1c6.1-11.8 1.5-26.3-10.2-32.4s-26.3-1.5-32.4 10.2L117.6 192 32 192c-17.7 0-32 14.3-32 32s14.3 32 32 32L83.9 463.5C91 492 116.6 512 146 512L430 512c29.4 0 55-20 62.1-48.5L544 256c17.7 0 32-14.3 32-32s-14.3-32-32-32l-85.6 0L365.3 12.9C359.2 1.2 344.7-3.4 332.9 2.7s-16.3 20.6-10.2 32.4L404.3 192l-232.6 0L253.3 35.1zM192 304l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-8.8 7.2-16 16-16s16 7.2 16 16zm96-16c8.8 0 16 7.2 16 16l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-8.8 7.2-16 16-16zm128 16l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-8.8 7.2-16 16-16s16 7.2 16 16z" />
+                </svg>
+              </Link>
+            </div>
           </div>
-        </div>
-        <div className="w-7 h-7 right-3 absolute bottom-8 tablet:hidden" onClick={openMenu}>
-          {isMobileMenu ? <AiOutlineClose size={28} color="#FFF"/> : <AiOutlineMenu size={28} color="#FFF"/>}
+        ) : (
+          <BurgerMenu />
+        )}
+        <div
+          className="absolute bottom-8 right-3 h-7 w-7 tablet:hidden"
+          onClick={() => dispatch(toggleMenu())}
+        >
+          {isOpen ? (
+            <AiOutlineClose size={28} color="#FFF" />
+          ) : (
+            <AiOutlineMenu size={28} color="#FFF" />
+          )}
         </div>
       </div>
     </header>

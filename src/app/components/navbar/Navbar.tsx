@@ -1,30 +1,43 @@
 import React from "react";
 import Link from "next/link";
+import { useAppDispatch } from "@/redux/hooks/hooks";
+import { closeMenu } from "@/redux/store/menuSlice";
 
-const list: string[] = ["products", "carts"];
+const list = ["products", "carts"];
 
 export default function Navbar() {
+  const dispatch = useAppDispatch();
+
   return (
-    <nav className="w-[50%] flex flex-row text-responsive items-center justify-around">
-      <Link href={"/"} className="text-white ml-2 font-medium uppercase">
-        HOME
-      </Link>
-      <div >
-        <select
-          name="Catalog"
-          id=""
-          className="bg-transparent ml-1 text-white font-medium uppercase"
-        >
-          <option value="">Catalog</option>
-        </select>
-      </div>
-      {list.map((item, index) => (
-        <Link key={index} href={{ pathname: `/pages/${item}` }}>
-          <ul className="flex flex-row ml-2">
-            <li className="text-white font-medium uppercase">{item}</li>
-          </ul>
-        </Link>
-      ))}
-    </nav>
+    <>
+      {
+        <nav className="flex w-[50%] flex-row items-center justify-around text-responsive">
+          <Link href={"/"} className="ml-2 font-medium uppercase text-white">
+            HOME
+          </Link>
+          <div>
+            <select
+              name="Catalog"
+              id=""
+              className="ml-1 bg-transparent font-medium uppercase text-white"
+            >
+              <option value="">Catalog</option>
+            </select>
+          </div>
+          {list.map((item, index) => (
+            <Link key={index} href={{ pathname: `/pages/${item}` }}>
+              <ul className={`ml-2 flex flex-row`}>
+                <li
+                  className="font-medium uppercase text-white"
+                  onClick={() => dispatch(closeMenu())}
+                >
+                  {item}
+                </li>
+              </ul>
+            </Link>
+          ))}
+        </nav>
+      }
+    </>
   );
 }
