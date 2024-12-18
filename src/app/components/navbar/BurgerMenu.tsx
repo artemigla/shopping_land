@@ -7,7 +7,7 @@ const list = ["products", "carts", "basket"];
 
 export default function BurgerMenu() {
   const dispatch = useDispatch();
-  const { isOpen } = useSelector((state: RootState) => state?.burgermenu);
+  const { isOpen } = useSelector((state: RootState) => state.burgermenu);
 
   return (
     <div>

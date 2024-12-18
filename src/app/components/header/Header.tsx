@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import Navbar from "../navbar/Navbar";
 import {
@@ -12,24 +12,25 @@ import {
 } from "react-icons/ai";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks/hooks";
 import { toggleMenu } from "@/redux/store/menuSlice";
+import { toggleTheme } from "@/redux/store/themeSlice";
 import BurgerMenu from "../navbar/BurgerMenu";
 
 export default function Header() {
-  const [isTheme, setIsTheme] = useState<boolean>(false);
-  const { isOpen } = useAppSelector((selector) => selector?.burgermenu);
+  const { isOpen } = useAppSelector((selector) => selector.burgermenu);
+  const { isDark } = useAppSelector((isTheme) => isTheme.theme);
   const dispatch = useAppDispatch();
 
-  const changeTheme = () => {
-    setIsTheme(() => !isTheme);
-  };
-
   return (
-    <header className="grid h-32 w-full grid-cols-2 bg-slate-500">
+    <header
+      className={`grid h-32 w-full transform duration-500 ${isDark ? "dark:bg-black" : "dark:bg-white"} grid-cols-2`}
+    >
       <Link
         href={"/"}
         className="relative ml-5 flex w-16 flex-col items-center justify-center"
       >
-        <h3 className="text-responsive font-medium uppercase text-white">
+        <h3
+          className={`transform bg-transparent text-responsive font-medium uppercase duration-500 ${isDark ? "text-white" : "text-black"}`}
+        >
           SHOPPING
         </h3>
         <svg
@@ -108,23 +109,37 @@ export default function Header() {
             d="M6.78 270.5v-27.12h498.37l.03.05.07 50.12c-8.8-.53-16.35-5.65-20.32-12.99-4.2 7.76-12.41 13.04-21.85 13.04-9.44 0-17.65-5.28-21.85-13.04-4.2 7.76-12.41 13.04-21.85 13.04-6.93 0-13.19-2.84-17.69-7.42-4.8 4.58-11.11 7.42-16.96 7.42-11.57 0-17.65-5.28-21.85-13.04-4.19 7.76-12.61 13.04-21.85 13.04-6.4 0-21.26-5.95-21.26-12.87-10.62 19.31-39.82 16.11-45.7-5.4-5.9 21.58-35.25 24.73-45.79 5.23-9.32 17.24-34.38 17.24-43.7 0-9.32 17.24-34.38 17.24-43.7 0-9.32 17.24-34.38 17.24-43.7 0-9.32 17.24-34.38 17.24-43.7 0-4.19 7.76-10.27 13.04-21.85 13.04-11.08 0-23.8-10.2-24.85-23.1z"
           />
         </svg>
-        <h3 className="text-responsive font-medium uppercase text-white">
+        <h3
+          className={`transform text-responsive font-medium uppercase duration-500 ${isDark ? "text-white" : "text-black"}`}
+        >
           Land
         </h3>
       </Link>
       <div className="relative grid grid-rows-2">
         <div className="relative flex items-center justify-around">
           <div className="flex items-center justify-center">
-            <AiOutlineSearch size={28} color="#FFF" className="ml-16" />
+            <AiOutlineSearch
+              size={28}
+              color={`${isDark ? "#FFF" : "#000"}`}
+              className={`ml-16 transform bg-transparent duration-500`}
+            />
           </div>
           <div
             className="relative flex h-7 w-7 items-center justify-center"
-            onClick={changeTheme}
+            onClick={() => dispatch(toggleTheme())}
           >
-            {isTheme ? (
-              <AiOutlineMoon size={28} color="#FFF" />
+            {isDark ? (
+              <AiOutlineMoon
+                className="transform bg-transparent duration-500"
+                size={28}
+                color={`${isDark ? "#FFF" : "#000"}`}
+              />
             ) : (
-              <AiOutlineSun size={28} color="#FFF" />
+              <AiOutlineSun
+                className="transform bg-transparent duration-500"
+                size={28}
+                color={`${isDark ? "#FFF" : "#000"}`}
+              />
             )}
           </div>
         </div>
@@ -136,8 +151,8 @@ export default function Header() {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 576 512"
-                  className="h-8 w-8 tablet:h-6 tablet:w-6 laptop:h-7 laptop:w-7"
-                  color="#ffffff"
+                  className="h-8 w-8 transform duration-500 tablet:h-6 tablet:w-6 laptop:h-7 laptop:w-7"
+                  color={`${isDark ? "#FFF" : "#000"}`}
                   fill="currentcolor"
                 >
                   <path d="M253.3 35.1c6.1-11.8 1.5-26.3-10.2-32.4s-26.3-1.5-32.4 10.2L117.6 192 32 192c-17.7 0-32 14.3-32 32s14.3 32 32 32L83.9 463.5C91 492 116.6 512 146 512L430 512c29.4 0 55-20 62.1-48.5L544 256c17.7 0 32-14.3 32-32s-14.3-32-32-32l-85.6 0L365.3 12.9C359.2 1.2 344.7-3.4 332.9 2.7s-16.3 20.6-10.2 32.4L404.3 192l-232.6 0L253.3 35.1zM192 304l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-8.8 7.2-16 16-16s16 7.2 16 16zm96-16c8.8 0 16 7.2 16 16l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-8.8 7.2-16 16-16zm128 16l0 96c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-96c0-8.8 7.2-16 16-16s16 7.2 16 16z" />
@@ -153,9 +168,17 @@ export default function Header() {
           onClick={() => dispatch(toggleMenu())}
         >
           {isOpen ? (
-            <AiOutlineClose size={28} color="#FFF" />
+            <AiOutlineClose
+              className="transform bg-transparent duration-500"
+              size={28}
+              color={`${isDark ? "#FFF" : "#000"}`}
+            />
           ) : (
-            <AiOutlineMenu size={28} color="#FFF" />
+            <AiOutlineMenu
+              className="transform bg-transparent duration-500"
+              size={28}
+              color={`${isDark ? "#FFF" : "#000"}`}
+            />
           )}
         </div>
       </div>

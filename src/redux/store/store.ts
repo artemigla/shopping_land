@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import burgerReducer from './menuSlice';
+import toggleTheme from './themeSlice';
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      burgermenu: burgerReducer
+      burgermenu: burgerReducer,
+      theme: toggleTheme
     },
   })
 }
