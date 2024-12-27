@@ -2,14 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --my-color: #ffffff;
-  /* --foreground: #171717; */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+/* :root {
+  --my-color: #ffffff;
+  --foreground: #171717;
+} */
 
-[data-theme="dark"] {
+/* [data-theme="dark"] {
   --my-color: #000;
 }
 [data-theme="light"] {
   --my-color: #ffffff;
-}
+} */
