@@ -5,12 +5,12 @@ import React from "react";
 
 export default function Header() {
   return (
-    <header className="relative ml-auto mr-auto flex h-20 w-full items-center justify-center border-b-[1px] border-b-gray-300">
-      <div className="relative grid h-[46px] w-[1280px] grid-cols-[1fr_2fr_1fr] decoration-transparent">
-        <div className="relative flex min-w-32 items-center bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-xl font-bold text-transparent">
-          SHOPPING LAND
+    <header className="relative ml-auto mr-auto flex h-20 w-full items-center justify-center border-b-[1px] border-b-gray-300 max-tablet:h-[189px]">
+      <div className="relative grid h-[46px] w-[1280px] grid-cols-[1fr_2fr_1fr] decoration-transparent max-laptop:grid-cols-2 max-tablet:h-[189px] max-tablet:grid-cols-1">
+        <div className="relative flex min-w-32 items-center bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-xl font-bold text-transparent max-tablet:mt-auto max-tablet:justify-center max-tablet:text-sm">
+          <p className="max-tablet:mb-1">SHOPPING LAND</p>
         </div>
-        <div className="relative flex items-center justify-center">
+        <div className="relative flex items-center justify-center max-laptop:right-7 max-tablet:left-4 max-tablet:right-4 max-tablet:mb-0 max-tablet:w-[90%]">
           <div className="absolute inset-y-0 left-0 flex items-center pl-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -33,11 +33,11 @@ export default function Header() {
             className="w-full rounded-lg border border-gray-300 bg-[#dedede] py-1 pl-10 outline-none"
           />
         </div>
-        <div className="ml-auto flex w-[80%] justify-between">
+        <div className="ml-auto flex w-[80%] items-end justify-between max-laptop:hidden">
           <Link href={""} className="flex flex-col items-center justify-center">
             <svg
-              width="27"
-              height="18"
+              width="clamp(0.938rem, 0.313rem + 2vi, 1.563rem)"
+              // height="18"
               viewBox="0 0 27 18"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -56,12 +56,12 @@ export default function Header() {
                 fill="#454545"
               />
             </svg>
-            <p>Каталог</p>
+            <p className="text-[14px] font-light text-[#454545]">Каталог</p>
           </Link>
           <Link href={""} className="flex flex-col items-center justify-center">
             <svg
-              width="25"
-              height="23"
+              width="clamp(0.938rem, calc(0.313rem + 2vi), 1.563rem)"
+              // height="23"
               viewBox="0 0 25 23"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -88,12 +88,12 @@ export default function Header() {
                 strokeLinejoin="round"
               />
             </svg>
-            <p>Корзина</p>
+            <p className="text-[14px] font-light text-[#454545]">Корзина</p>
           </Link>
           <Link href={""} className="flex flex-col items-center justify-center">
             <svg
-              width="22"
-              height="24"
+              width="clamp(0.938rem, calc(0.313rem + 2vi), 1.563rem)"
+              // height="24"
               viewBox="0 0 22 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +113,7 @@ export default function Header() {
                 strokeLinejoin="round"
               />
             </svg>
-            <p>Профиль</p>
+            <p className="text-[14px] font-light text-[#454545]">Профиль</p>
           </Link>
         </div>
       </div>

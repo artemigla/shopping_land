@@ -13,12 +13,6 @@ export default {
       //   background: "var(--background)",
       //   foreground: "var(--foreground)",
       // },
-      gridTemplateColumns: {
-        'header': 'auto-fit, repeat(3, minmax(150, 1fr))',
-
-        // Complex site-specific column configuration
-        'footer': '200px minmax(900px, 1fr) 100px',
-      },
       fontSize: {
         'responsive':'clamp(0.8rem, 1vw, 1.5rem)'
       },
