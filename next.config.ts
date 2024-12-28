@@ -6,7 +6,18 @@ const nextConfig: NextConfig = {
 };
 module.exports = {
   images: {
-    domains: ["cdn.dummyjson.com", "via.placeholder.com"],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.dummyjson.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+        pathname: '/**',
+      },
+    ],
   },
   productionBrowserSourceMaps: false
 };

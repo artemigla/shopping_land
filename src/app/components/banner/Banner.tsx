@@ -35,20 +35,24 @@ export default function Banner() {
   };
 
   return (
-    <div className="relative ml-auto mr-auto mt-10 h-[260px] w-[1280px] overflow-hidden rounded-xl border border-solid">
+    <div className="relative ml-auto mr-auto mt-10 h-[260px] overflow-hidden rounded-xl border border-solid max-tablet:h-[149px] max-tablet:w-full max-small:w-full max-sm:w-full max-xs:w-full laptop:w-[95%] desktop:w-[1280px]">
       {state?.length > 0 && (
         <div
-          className="flex h-[260px] w-[1280px] transition-transform duration-500 ease-in-out"
+          className="flex transition-transform duration-500 ease-in-out max-tablet:w-full max-small:w-full max-sm:w-full max-xs:w-full max-ss:w-full laptop:w-[95%] desktop:w-full"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {state?.map(({ id, thumbnail }) => (
-            <div key={id} className="h-[260px] w-full flex-shrink-0">
+            <div
+              key={id}
+              className="flex-shrink-0 ss:w-full xs:w-full sm:w-full small:w-full tablet:w-full laptop:w-full desktop:w-full"
+            >
               <Image
                 src={thumbnail ?? "https://via.placeholder.com/1280x260"}
                 alt={`Product ${id}`}
                 width={1280}
-                height={260}
-                className="h-[260px] w-full object-contain"
+                height={0}
+                priority
+                className="h-[260px] w-auto object-contain max-tablet:h-[149px] ss:w-full xs:w-full sm:w-full small:w-full tablet:w-full laptop:w-full desktop:w-full"
               />
             </div>
           ))}
@@ -56,13 +60,12 @@ export default function Banner() {
       )}
       <span
         onClick={handlePrev}
-        className="absolute left-10 top-1/2 z-10 -translate-y-1/2 transform cursor-pointer px-4 py-2"
+        className="absolute left-10 top-1/2 z-10 -translate-y-1/2 transform cursor-pointer px-4 py-2 max-tablet:left-0"
       >
         <svg
-          width="52"
-          height="52"
           viewBox="0 0 52 52"
           fill="none"
+          className={"h-auto w-dynamic"}
           xmlns="http://www.w3.org/2000/svg"
         >
           <rect
@@ -85,14 +88,13 @@ export default function Banner() {
       </span>
       <span
         onClick={handleNext}
-        className="absolute right-10 top-1/2 z-10 -translate-y-1/2 transform cursor-pointer px-4 py-2"
+        className="absolute right-10 top-1/2 z-10 -translate-y-1/2 transform cursor-pointer px-4 py-2 max-tablet:right-0"
       >
         <svg
-          width="52"
-          height="52"
           viewBox="0 0 52 52"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          className={"h-auto w-dynamic"}
         >
           <rect
             x="1"

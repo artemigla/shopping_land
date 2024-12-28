@@ -16,14 +16,12 @@ export default function Input({
   placeholder,
 }: InputType) {
   return (
-    <div>
-      <input
-        type={type}
-        value={value}
-        className={className}
-        placeholder={placeholder}
-        onInput={onInput}
-      />
-    </div>
+    <input
+      type={type}
+      value={value}
+      className={className}
+      placeholder={placeholder}
+      onInput={onInput}
+    />
   );
 }
