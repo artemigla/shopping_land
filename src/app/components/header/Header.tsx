@@ -36,7 +36,7 @@ export default function Header() {
         <div className="ml-auto flex w-[80%] items-end justify-between max-laptop:hidden">
           <Link href={""} className="flex flex-col items-center justify-center">
             <svg
-              width="clamp(0.938rem, 0.313rem + 2vi, 1.563rem)"
+              width="clamp(0.938rem, calc(0.313rem + 2vi), 1.563rem)"
               // height="18"
               viewBox="0 0 27 18"
               fill="none"

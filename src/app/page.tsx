@@ -1,10 +1,11 @@
 "use client";
 import React from "react";
+import Banner from "./components/banner/Banner";
 
 export default function Home() {
   return (
     <div>
-      <h1>HOME</h1>
+      <Banner />
     </div>
   );
 }
