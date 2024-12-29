@@ -52,6 +52,7 @@ export default function Banner() {
                 width={1280}
                 height={0}
                 priority
+                unoptimized
                 className="h-[260px] w-auto object-contain max-tablet:h-[149px] ss:w-full xs:w-full sm:w-full small:w-full tablet:w-full laptop:w-full desktop:w-full"
               />
             </div>
