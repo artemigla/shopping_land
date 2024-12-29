@@ -9,6 +9,7 @@ export default function Categories() {
     { slug: string; name: string }[]
   >([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
@@ -43,6 +44,20 @@ export default function Categories() {
       setLoading(false);
     }
   };
+
+  const getAllProducts = async () => {
+    try {
+      await fetch(`${BASE_URL}/products`)
+        .then((response) => response.json())
+        .then((response) => setAllProducts(response.products));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
 
   return (
     <div className="p-6">
@@ -92,7 +107,29 @@ export default function Categories() {
             </div>
           </div>
         ) : (
-          <p>Select a category to see products.</p>
+          <div className="lg:grid-cols-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {allProducts?.map(
+              ({ id, thumbnail, title, description, price }) => (
+                <div
+                  key={id}
+                  className="rounded-lg border p-4 shadow-sm hover:shadow-md"
+                >
+                  <Image
+                    width={120}
+                    height={120}
+                    src={thumbnail || ""}
+                    alt={title || ""}
+                    className="mb-4 h-32 w-full rounded object-contain"
+                  />
+                  <h3 className="text-lg font-bold">{title}</h3>
+                  <p className="mb-2 text-sm text-gray-600">
+                    {description ? description.slice(0, 60) : ""}
+                  </p>
+                  <p className="font-semibold text-blue-600">${price}</p>
+                </div>
+              ),
+            )}
+          </div>
         )}
       </div>
     </div>
