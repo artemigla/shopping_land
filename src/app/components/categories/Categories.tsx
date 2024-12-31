@@ -1,75 +1,53 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { Product } from "@/app/interfaces/Interface";
-import { BASE_URL } from "../api/api";
+import React, { useEffect } from "react";
 import Image from "next/image";
+import Products from "../products/Products";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import {
+  fetchCategories,
+  fetchProductsByCategory,
+  setActiveCategory,
+} from "@/lib/features/slices/categoriesSlice";
 
 export default function Categories() {
-  const [categories, setCategories] = useState<
-    { slug: string; name: string }[]
-  >([]);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const { categories, activeCategory, error, loading, products } =
+    useAppSelector((state) => state?.categoriesStore);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch(`${BASE_URL}/products/categories`);
-        const data = await response.json();
-        setCategories(data);
-      } catch (error) {
-        console.error("Failed to fetch categories:", error);
-      }
-    };
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
-    fetchCategories();
-  }, []);
-
-  const fetchProductsByCategory = async (category: string) => {
-    if (typeof category !== "string") {
-      console.error("Invalid category:", category);
-      return;
-    }
-    setLoading(true);
-    setActiveCategory(category);
-    try {
-      const response = await fetch(`${BASE_URL}/products/category/${category}`);
-      const data = await response.json();
-      setProducts(data?.products);
-    } catch (error) {
-      console.error("Failed to fetch products:", error);
-    } finally {
-      setLoading(false);
-    }
+  const handleCategoryClick = (category: string) => {
+    dispatch(fetchProductsByCategory(category));
+    dispatch(setActiveCategory(category));
   };
 
-  const getAllProducts = async () => {
-    try {
-      await fetch(`${BASE_URL}/products`)
-        .then((response) => response.json())
-        .then((response) => setAllProducts(response.products));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  if (loading) {
+    return <div>Завантаження...</div>;
+  }
 
-  useEffect(() => {
-    getAllProducts();
-  }, []);
+  if (error) {
+    return <div>Помилка: {error}</div>;
+  }
+
+  if (!categories || categories.length === 0) {
+    return <div>Категорії не знайдено.</div>;
+  }
 
   return (
-    <div className="p-6">
+    <div className="ml-auto mr-auto desktop:w-[1280px]">
       <h1 className="mb-4 text-2xl font-bold">Categories</h1>
-      <div className="flex space-x-4 overflow-x-auto">
-        {categories.map(({ slug, name }) => (
+      <div className="m-0 space-x-4 space-y-4 max-tablet:grid-cols-3 laptop:grid-cols-5 desktop:grid-cols-10">
+        {categories?.map((category) => (
           <button
-            key={name}
-            onClick={() => fetchProductsByCategory(slug)}
-            className={`rounded-lg px-4 py-2 text-white ${activeCategory === name ? "bg-blue-600" : "bg-blue-400 hover:bg-blue-500"}`}
+            key={category.slug}
+            onClick={() => handleCategoryClick(category?.slug)}
+            className="rounded-lg bg-purple-400 p-3 text-white"
           >
-            {slug}
+            <span className="truncate p-1 text-responsive">
+              {category.name}
+            </span>
           </button>
         ))}
       </div>
@@ -80,7 +58,7 @@ export default function Categories() {
         ) : activeCategory ? (
           <div>
             <h2 className="mb-4 text-xl font-semibold">{`Products in ${activeCategory}`}</h2>
-            <div className="lg:grid-cols-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="lg:grid-cols-3 grid gap-4 max-sm:grid-cols-2 ss:grid-cols-2 desktop:grid-cols-3">
               {products?.map((product) => (
                 <div
                   key={product?.id}
@@ -89,16 +67,11 @@ export default function Categories() {
                   <Image
                     width={120}
                     height={120}
-                    src={product?.thumbnail || ""}
+                    src={product?.thumbnail || "/placeholder.jpg"}
                     alt={product?.title || ""}
                     className="mb-4 h-32 w-full rounded object-contain"
                   />
                   <h3 className="text-lg font-bold">{product?.title}</h3>
-                  <p className="mb-2 text-sm text-gray-600">
-                    {product?.description
-                      ? product?.description.slice(0, 60)
-                      : ""}
-                  </p>
                   <p className="font-semibold text-blue-600">
                     ${product?.price}
                   </p>
@@ -107,29 +80,7 @@ export default function Categories() {
             </div>
           </div>
         ) : (
-          <div className="lg:grid-cols-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {allProducts?.map(
-              ({ id, thumbnail, title, description, price }) => (
-                <div
-                  key={id}
-                  className="rounded-lg border p-4 shadow-sm hover:shadow-md"
-                >
-                  <Image
-                    width={120}
-                    height={120}
-                    src={thumbnail || ""}
-                    alt={title || ""}
-                    className="mb-4 h-32 w-full rounded object-contain"
-                  />
-                  <h3 className="text-lg font-bold">{title}</h3>
-                  <p className="mb-2 text-sm text-gray-600">
-                    {description ? description.slice(0, 60) : ""}
-                  </p>
-                  <p className="font-semibold text-blue-600">${price}</p>
-                </div>
-              ),
-            )}
-          </div>
+          <Products />
         )}
       </div>
     </div>
