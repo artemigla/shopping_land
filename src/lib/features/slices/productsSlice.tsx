@@ -13,7 +13,7 @@ const initialState: {
 };
 
 export const fetchProducts = createAsyncThunk(
-  "products/fetchProducts",
+  "fetchProducts",
   async () => {
     const response = await fetch(`${BASE_URL}/products`);
     const data = await response.json();

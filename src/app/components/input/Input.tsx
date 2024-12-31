@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 
 type InputType = {
@@ -5,7 +6,8 @@ type InputType = {
   value: string;
   className: string;
   placeholder: string;
-  onInput: () => void;
+  onInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 };
 
 export default function Input({
@@ -14,6 +16,7 @@ export default function Input({
   className,
   onInput,
   placeholder,
+  onKeyDown
 }: InputType) {
   return (
     <input
@@ -22,6 +25,7 @@ export default function Input({
       className={className}
       placeholder={placeholder}
       onInput={onInput}
+      onKeyDown={onKeyDown}
     />
   );
 }

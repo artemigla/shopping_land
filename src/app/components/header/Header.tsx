@@ -1,10 +1,30 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useState, KeyboardEvent } from "react";
 import Input from "../input/Input";
+import { fetchSearchProducts } from "@/lib/features/slices/searchProducts";
+// import { RootState } from "@/lib/store";
+import { useAppDispatch } from "@/lib/hooks";
 
 export default function Header() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const dispatch = useAppDispatch();
+  // const { products } = useAppSelector((state: RootState) => state?.searchStore);
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      dispatch(fetchSearchProducts(searchQuery));
+    }
+    setSearchQuery("");
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" && searchQuery.trim()) {
+      handleSearch();
+    }
+  };
+
   return (
     <header className="relative ml-auto mr-auto flex h-20 w-full items-center justify-center border-b-[1px] border-b-gray-300 max-tablet:rounded-b-md tablet:h-[129px]">
       <div className="relative grid h-[46px] w-[1280px] grid-cols-[1fr_2fr_1fr] decoration-transparent max-laptop:grid-cols-2 max-tablet:h-[189px] max-tablet:grid-cols-1">
@@ -31,9 +51,10 @@ export default function Header() {
           <div className="flex w-full items-center tablet:h-9">
             <Input
               type="search"
-              value=""
-              placeholder="Search"
-              onInput={() => null}
+              value={searchQuery}
+              placeholder="Search..."
+              onInput={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
               className={
                 "w-full rounded-lg border border-gray-300 bg-[#dedede] py-1 pl-10 outline-none"
               }
