@@ -1,22 +1,33 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState, KeyboardEvent } from "react";
+import React, { useState, KeyboardEvent, useRef } from "react";
 import Input from "../input/Input";
 import { fetchSearchProducts } from "@/lib/features/slices/searchProducts";
-// import { RootState } from "@/lib/store";
 import { useAppDispatch } from "@/lib/hooks";
+import Categories from "../categories/Categories";
 
 export default function Header() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isOpenCatalog, setIsOpenCatalog] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  // const { products } = useAppSelector((state: RootState) => state?.searchStore);
 
+  const handlerButton = () => {
+    setIsOpenCatalog((prev) => !prev);
+  };
+
+  const modalRef = useRef<HTMLDivElement | null>(null);
   const handleSearch = () => {
     if (searchQuery.trim()) {
       dispatch(fetchSearchProducts(searchQuery));
     }
     setSearchQuery("");
+  };
+
+  const handleClickOutside = (event: React.MouseEvent) => {
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      setIsOpenCatalog(false);
+    }
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -62,7 +73,10 @@ export default function Header() {
           </div>
         </div>
         <div className="ml-auto flex w-[80%] items-end justify-between max-laptop:hidden">
-          <Link href={""} className="flex flex-col items-center justify-center">
+          <span
+            onClick={handlerButton}
+            className="flex cursor-pointer flex-col items-center justify-center"
+          >
             <svg
               viewBox="0 0 27 18"
               fill="none"
@@ -84,7 +98,27 @@ export default function Header() {
               />
             </svg>
             <p className="text-[14px] font-light text-[#454545]">Каталог</p>
-          </Link>
+            {isOpenCatalog && (
+              <div
+                className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+                onClick={handleClickOutside}
+              >
+                <div
+                  ref={modalRef}
+                  className="w-[95%] rounded-lg bg-white p-6 shadow-lg"
+                >
+                  <button
+                    onClick={handleClickOutside}
+                    className="relative flex ml-auto mt-0 rounded bg-red-500 px-4 py-2 text-white font-bold"
+                  >
+                    X
+                  </button>
+                  <h1 className="mb-4 text-2xl font-bold">Categories</h1>
+                  <Categories />
+                </div>
+              </div>
+            )}
+          </span>
           <Link href={""} className="flex flex-col items-center justify-center">
             <svg
               viewBox="0 0 25 23"

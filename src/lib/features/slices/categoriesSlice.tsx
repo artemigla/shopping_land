@@ -10,7 +10,7 @@ interface Category {
 
 interface CategoryState {
   categories: Category[];
-  products: Product[];
+  productsCategories: Product[];
   categoryImages: { [key: string]: string };
   activeCategory: string | null;
   loading: boolean;
@@ -19,7 +19,7 @@ interface CategoryState {
 
 const initialState: CategoryState = {
   categories: [],
-  products: [],
+  productsCategories: [],
   categoryImages: {},
   activeCategory: null,
   loading: false,
@@ -73,7 +73,7 @@ export const categoriesSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchProductsByCategory.fulfilled, (state, action) => {
-        state.products = action.payload.products;
+        state.productsCategories = action.payload.products;
         state.activeCategory = action.payload.category;
         state.loading = false;
       })

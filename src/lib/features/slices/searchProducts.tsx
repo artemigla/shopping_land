@@ -10,13 +10,13 @@ interface Product {
 }
 
 interface ProductsState {
-  products: Product[];
+  productsSearch: Product[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: ProductsState = {
-  products: [],
+  productsSearch: [],
   loading: false,
   error: null,
 };
@@ -42,7 +42,7 @@ export const fetchSearchProducts = createAsyncThunk(
 );
 
 export const searchSlice = createSlice({
-  name: "searchproducts",
+  name: "searchProducts",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -53,7 +53,7 @@ export const searchSlice = createSlice({
       })
       .addCase(fetchSearchProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.products = action.payload;
+        state.productsSearch = action.payload;
       })
       .addCase(fetchSearchProducts.rejected, (state, action) => {
         state.loading = false;

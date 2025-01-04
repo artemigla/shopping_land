@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import { fetchProducts } from "@/lib/features/slices/productsSlice";
+import { fetchProducts } from "@/lib/features/slices/allProductsSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Image from "next/image";
 import { fetchSearchProducts } from "@/lib/features/slices/searchProducts";
@@ -11,7 +11,11 @@ export default function Products() {
     (state) => state?.productStore,
   );
 
-  const { products } = useAppSelector((state) => state?.searchStore);
+  const { productsSearch } = useAppSelector((state) => state?.searchStore);
+
+  const { productsCategories, activeCategory } = useAppSelector(
+    (state) => state?.categoriesStore,
+  );
 
   useEffect(() => {
     dispatch(fetchSearchProducts(""));
@@ -20,6 +24,7 @@ export default function Products() {
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
+
   if (loading) {
     return <div>Завантаження...</div>;
   }
@@ -28,50 +33,108 @@ export default function Products() {
     return <div>Помилка: {error}</div>;
   }
 
+  const headerText = activeCategory
+    ? `Search results for`
+    : activeCategory
+      ? `Products in "${activeCategory}"`
+      : "All products";
+
+  const allProducts = productSelector.length > 0;
+  const searcProducts = productsSearch.length > 0;
+
+  const showDisplay = allProducts ? searcProducts : allProducts;
+  console.log(showDisplay);
+
   return (
     <>
-      <h1 className="mb-4 text-xl font-semibold">All products</h1>
-      <div className="lg:grid-cols-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {products.length > 0 ? (
-          <>
-            {products?.map(({ id, thumbnail, title, price }) => (
+      {productsCategories.length > 0 ? (
+        <div>
+          <h2 className="mb-4 text-xl font-semibold">{`Products in ${activeCategory}`}</h2>
+          <div className="lg:grid-cols-3 grid gap-4 max-sm:grid-cols-2 ss:grid-cols-2 desktop:grid-cols-3">
+            {productsCategories?.map((product) => (
               <div
-                key={id}
+                key={product?.id}
                 className="rounded-lg border p-4 shadow-sm hover:shadow-md"
               >
                 <Image
                   width={120}
                   height={120}
-                  src={thumbnail || ""}
-                  alt={title || ""}
+                  src={product?.thumbnail || "/placeholder.jpg"}
+                  alt={product?.title || ""}
                   className="mb-4 h-32 w-full rounded object-contain"
                 />
-                <h3 className="text-lg font-bold">{title}</h3>
-                <p className="font-semibold text-blue-600">${price}</p>
+                <h3 className="text-lg font-bold">{product?.title}</h3>
+                <p className="font-semibold text-blue-600">${product?.price}</p>
               </div>
             ))}
-          </>
-        ) : (
-          <>
-            {productSelector?.map(({ id, thumbnail, title, price }) => (
-              <div
-                key={id}
-                className="rounded-lg border p-4 shadow-sm hover:shadow-md"
-              >
-                <Image
-                  width={120}
-                  height={120}
-                  src={thumbnail || ""}
-                  alt={title || ""}
-                  className="mb-4 h-32 w-full rounded object-contain"
-                />
-                <h3 className="text-lg font-bold">{title}</h3>
-                <p className="font-semibold text-blue-600">${price}</p>
-              </div>
-            ))}
-          </>
-        )}
-      </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          <h1 className="mb-4 text-xl font-semibold">{headerText}</h1>
+          <div className="lg:grid-cols-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {showDisplay ? (
+              <>
+                {productsSearch?.map(({ id, thumbnail, title, price }) => (
+                  <div
+                    key={id}
+                    className="rounded-lg border p-4 shadow-sm hover:shadow-md"
+                  >
+                    <Image
+                      width={120}
+                      height={120}
+                      src={thumbnail || ""}
+                      alt={title || ""}
+                      className="mb-4 h-32 w-full rounded object-contain"
+                    />
+                    <h3 className="text-lg font-bold">{title}</h3>
+                    <p className="font-semibold text-blue-600">${price}</p>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <>
+                {productSelector?.map(({ id, thumbnail, title, price }) => (
+                  <div
+                    key={id}
+                    className="rounded-lg border p-4 shadow-sm hover:shadow-md"
+                  >
+                    <Image
+                      width={120}
+                      height={120}
+                      src={thumbnail || ""}
+                      alt={title || ""}
+                      className="mb-4 h-32 w-full rounded object-contain"
+                    />
+                    <h3 className="text-lg font-bold">{title}</h3>
+                    <p className="font-semibold text-blue-600">${price}</p>
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+        </>
+      )}
+      {/* {productsSearch.length > 0 ? (
+        <>
+          {productsSearch?.map((product) => (
+            <div
+              key={product?.id}
+              className="rounded-lg border p-4 shadow-sm hover:shadow-md"
+            >
+              <Image
+                width={120}
+                height={120}
+                src={product?.thumbnail || "/placeholder.jpg"}
+                alt={product?.title || ""}
+                className="mb-4 h-32 w-full rounded object-contain"
+              />
+              <h3 className="text-lg font-bold">{product?.title}</h3>
+              <p className="font-semibold text-blue-600">${product?.price}</p>
+            </div>
+          ))}
+        </>
+      ) : null} */}
     </>
   );
 }
