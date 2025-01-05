@@ -10,12 +10,16 @@ import Categories from "../categories/Categories";
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isOpenCatalog, setIsOpenCatalog] = useState<boolean>(false);
+  const [isOpenMobileMenu, setIsOpenMobileMenu] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   const handlerButton = () => {
     setIsOpenCatalog((prev) => !prev);
   };
 
+  const changeMenu = () => {
+    setIsOpenMobileMenu((prev) => !prev);
+  };
   const modalRef = useRef<HTMLDivElement | null>(null);
   const handleSearch = () => {
     if (searchQuery.trim()) {
@@ -38,11 +42,11 @@ export default function Header() {
 
   return (
     <header className="relative ml-auto mr-auto flex h-20 w-full items-center justify-center border-b-[1px] border-b-gray-300 max-tablet:rounded-b-md tablet:h-[129px]">
-      <div className="relative grid h-[46px] w-[1280px] grid-cols-[1fr_2fr_1fr] decoration-transparent max-laptop:grid-cols-2 max-tablet:h-[189px] max-tablet:grid-cols-1">
+      <div className="relative grid h-[46px] w-[1280px] grid-cols-[1fr_2fr_1fr] decoration-transparent max-laptop:grid-cols-2 max-tablet:h-auto max-tablet:grid-cols-1">
         <div className="relative flex min-w-32 items-center bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 bg-clip-text text-xl font-bold text-transparent max-tablet:mt-auto max-tablet:justify-center max-tablet:text-sm">
           <p className="max-tablet:mb-1">SHOPPING LAND</p>
         </div>
-        <div className="relative flex items-center justify-center max-laptop:right-7 max-tablet:left-4 max-tablet:right-4 max-tablet:mb-0 max-tablet:h-12 max-tablet:w-[90%]">
+        <div className="relative flex w-[90%] items-center justify-center max-laptop:right-7 max-tablet:left-4 max-tablet:right-0 max-tablet:mb-0 max-tablet:h-12 max-tablet:w-[80%]">
           <div className="absolute inset-y-0 left-0 flex items-center pl-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +71,7 @@ export default function Header() {
               onInput={(e) => setSearchQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               className={
-                "w-full rounded-lg border border-gray-300 bg-[#dedede] py-1 pl-10 outline-none"
+                "w-full rounded-lg border border-gray-300 bg-[#dedede] py-1 pl-10 outline-none max-laptop:mr-[5%]"
               }
             />
           </div>
@@ -109,7 +113,7 @@ export default function Header() {
                 >
                   <button
                     onClick={handleClickOutside}
-                    className="relative flex ml-auto mt-0 rounded bg-red-500 px-4 py-2 text-white font-bold"
+                    className="relative ml-auto mt-0 flex rounded bg-red-500 px-4 py-2 font-bold text-white"
                   >
                     X
                   </button>
@@ -175,6 +179,76 @@ export default function Header() {
             <p className="text-[14px] font-light text-[#454545]">Профиль</p>
           </Link>
         </div>
+        {isOpenMobileMenu ? (
+          <div
+            onClick={changeMenu}
+            className="absolute right-1 top-1 hidden max-laptop:flex max-tablet:translate-y-[80%] max-tablet:items-center"
+          >
+            <svg
+              width="32px"
+              height="32px"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z"
+                  fill="#000000"
+                ></path>
+              </g>
+            </svg>
+          </div>
+        ) : (
+          <div
+            onClick={changeMenu}
+            className="absolute right-1 top-1 hidden max-laptop:flex max-tablet:translate-y-[80%]"
+          >
+            <svg
+              width="32px"
+              height="32px"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                {" "}
+                <path
+                  d="M4 18L20 18"
+                  stroke="#000000"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                ></path>{" "}
+                <path
+                  d="M4 12L20 12"
+                  stroke="#000000"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                ></path>{" "}
+                <path
+                  d="M4 6L20 6"
+                  stroke="#000000"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                ></path>{" "}
+              </g>
+            </svg>
+          </div>
+        )}
       </div>
     </header>
   );
