@@ -46,10 +46,7 @@ export default function Navigation() {
               ref={modalRef}
               className="w-[95%] rounded-lg bg-white p-6 shadow-lg"
             >
-              <button
-                onClick={handleClickOutside}
-                className="relative ml-auto mt-0 flex rounded bg-red-500 px-4 py-2 font-bold text-white"
-              >
+              <button className="relative ml-auto mt-0 flex rounded bg-red-500 px-4 py-2 font-bold text-white">
                 X
               </button>
               <h1 className="mb-4 text-2xl font-bold">Categories</h1>

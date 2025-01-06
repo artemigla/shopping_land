@@ -1,23 +1,47 @@
 "use client";
 
-import React, { useState, KeyboardEvent } from "react";
+import React, { useState, KeyboardEvent, useRef, useEffect } from "react";
 import Input from "../input/Input";
 import { fetchSearchProducts } from "@/lib/features/slices/searchProducts";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Navigation from "../menuNavigation/Navigation";
 import Link from "next/link";
-// import Categories from "../categories/Categories";
+
+import {
+  fetchCategories,
+  fetchProductsByCategory,
+  setActiveCategory,
+} from "@/lib/features/slices/categoriesSlice";
 
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState<string>("");
-
   const [isOpenMobileMenu, setIsOpenMobileMenu] = useState<boolean>(false);
+  const [isOpenCategories, setIsOpenCategories] = useState<boolean>(false);
+  const modalRef = useRef<HTMLSpanElement | null>(null);
   const dispatch = useAppDispatch();
+  const { categories } = useAppSelector((state) => state?.categoriesStore);
 
-  const changeMenu = () => {
-    setIsOpenMobileMenu((prev) => !prev);
+  const handleClickOutside = (event: React.MouseEvent) => {
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      setIsOpenCategories(false);
+    }
   };
 
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  const handleCategoryClick = (category: string) => {
+    dispatch(fetchProductsByCategory(category));
+    dispatch(setActiveCategory(category));
+  };
+
+  const changeMenu = () => {
+    setIsOpenMobileMenu((prev: boolean) => !prev);
+  };
+  const openCategories = () => {
+    setIsOpenCategories((prev: boolean) => !prev);
+  };
   const handleSearch = () => {
     if (searchQuery.trim()) {
       dispatch(fetchSearchProducts(searchQuery));
@@ -139,51 +163,95 @@ export default function Header() {
           </div>
         )}
         {isOpenMobileMenu ? (
-          <div className="absolute right-0 top-[4.7rem] z-50 h-auto w-[50%] bg-slate-800 p-1 tablet:top-[5.5rem] tablet:w-[25%] laptop:hidden">
+          <div className="absolute right-0 top-[4.7rem] z-30 h-auto w-[50%] bg-slate-800 p-1 tablet:top-[5.5rem] tablet:w-[25%] laptop:hidden">
             <ul className="flex flex-col gap-2 text-white">
               <Link href={""} className="ml-1 flex flex-row">
                 <svg
-                  viewBox="0 0 27 18"
+                  viewBox="0 0 22 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-auto w-icons"
                 >
-                  <rect x="0.5" width="2" height="2" rx="1" fill="#FFFFFF" />
-                  <rect x="6.5" width="20" height="2" rx="1" fill="#FFFFFF" />
-                  <rect
-                    x="0.5"
-                    y="8"
-                    width="2"
-                    height="2"
-                    rx="1"
-                    fill="#FFFFFF"
+                  <path
+                    d="M21 23V20.6667C21 19.429 20.4732 18.242 19.5355 17.3668C18.5979 16.4917 17.3261 16 16 16H6C4.67392 16 3.40215 16.4917 2.46447 17.3668C1.52678 18.242 1 19.429 1 20.6667V23"
+                    stroke="#FFFFFF"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
-                  <rect
-                    x="6.5"
-                    y="8"
-                    width="20"
-                    height="2"
-                    rx="1"
-                    fill="#FFFFFF"
-                  />
-                  <rect
-                    x="0.5"
-                    y="16"
-                    width="2"
-                    height="2"
-                    rx="1"
-                    fill="#FFFFFF"
-                  />
-                  <rect
-                    x="6.5"
-                    y="16"
-                    width="20"
-                    height="2"
-                    rx="1"
-                    fill="#FFFFFF"
+                  <path
+                    d="M10.5 11C13.2614 11 15.5 8.76142 15.5 6C15.5 3.23858 13.2614 1 10.5 1C7.73858 1 5.5 3.23858 5.5 6C5.5 8.76142 7.73858 11 10.5 11Z"
+                    stroke="#FFFFFF"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
-                <p className="ml-1">Каталог</p>
+                <p className="ml-1 text-[14px] font-light text-white">
+                  Профиль
+                </p>
+              </Link>
+              <Link href={""}>
+                <div
+                  onClick={handleClickOutside}
+                  className={`md:left-[-176px] absolute z-50 flex flex-col bg-slate-800 text-sm ss:left-[-123px] ss:w-[-178px] sm:w-44 laptop:left-[-240px] ${isOpenCategories ? "flex" : "hidden"}`}
+                >
+                  {categories?.map(({ name, slug }) => (
+                    <span
+                      key={slug}
+                      ref={modalRef}
+                      className="gap-2"
+                      onClick={() => handleCategoryClick(name)}
+                    >
+                      {name}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex flex-row" onClick={openCategories}>
+                  <svg
+                    viewBox="0 0 27 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-auto w-icons"
+                  >
+                    <rect x="0.5" width="2" height="2" rx="1" fill="#FFFFFF" />
+                    <rect x="6.5" width="20" height="2" rx="1" fill="#FFFFFF" />
+                    <rect
+                      x="0.5"
+                      y="8"
+                      width="2"
+                      height="2"
+                      rx="1"
+                      fill="#FFFFFF"
+                    />
+                    <rect
+                      x="6.5"
+                      y="8"
+                      width="20"
+                      height="2"
+                      rx="1"
+                      fill="#FFFFFF"
+                    />
+                    <rect
+                      x="0.5"
+                      y="16"
+                      width="2"
+                      height="2"
+                      rx="1"
+                      fill="#FFFFFF"
+                    />
+                    <rect
+                      x="6.5"
+                      y="16"
+                      width="20"
+                      height="2"
+                      rx="1"
+                      fill="#FFFFFF"
+                    />
+                  </svg>
+
+                  <p className={`ml-1`}>Каталог</p>
+                </div>
               </Link>
               <Link href={""} className="ml-1 flex flex-row">
                 <svg
@@ -216,32 +284,6 @@ export default function Header() {
                 </svg>
                 <p className="ml-1 text-[14px] font-light text-white">
                   Корзина
-                </p>
-              </Link>
-              <Link href={""} className="ml-1 flex flex-row">
-                <svg
-                  viewBox="0 0 22 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-auto w-icons"
-                >
-                  <path
-                    d="M21 23V20.6667C21 19.429 20.4732 18.242 19.5355 17.3668C18.5979 16.4917 17.3261 16 16 16H6C4.67392 16 3.40215 16.4917 2.46447 17.3668C1.52678 18.242 1 19.429 1 20.6667V23"
-                    stroke="#FFFFFF"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M10.5 11C13.2614 11 15.5 8.76142 15.5 6C15.5 3.23858 13.2614 1 10.5 1C7.73858 1 5.5 3.23858 5.5 6C5.5 8.76142 7.73858 11 10.5 11Z"
-                    stroke="#FFFFFF"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <p className="ml-1 text-[14px] font-light text-white">
-                  Профиль
                 </p>
               </Link>
             </ul>
