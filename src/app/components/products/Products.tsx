@@ -4,6 +4,7 @@ import { fetchProducts } from "@/lib/features/slices/allProductsSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Image from "next/image";
 import { fetchSearchProducts } from "@/lib/features/slices/searchProducts";
+import Link from "next/link";
 
 export default function Products() {
   const dispatch = useAppDispatch();
@@ -12,7 +13,6 @@ export default function Products() {
   );
 
   const { productsSearch } = useAppSelector((state) => state?.searchStore);
-
   const { productsCategories, activeCategory } = useAppSelector(
     (state) => state?.categoriesStore,
   );
@@ -70,7 +70,8 @@ export default function Products() {
             {productSelector.length > 0 ? (
               <>
                 {productsSearch?.map(({ id, thumbnail, title, price }) => (
-                  <div
+                  <Link
+                    href={`details/${id}`}
                     key={id}
                     className="rounded-lg border p-4 shadow-sm hover:shadow-md"
                   >
@@ -87,7 +88,7 @@ export default function Products() {
                     <p className="font-semibold text-blue-600 max-small:text-sm max-xs:text-xs">
                       ${price}
                     </p>
-                  </div>
+                  </Link>
                 ))}
               </>
             ) : (
