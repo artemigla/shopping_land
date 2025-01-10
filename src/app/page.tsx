@@ -9,7 +9,7 @@ export default function Home() {
     <div>
       <Banner />
       <Products />
-      <ProductDetails params={{ id: null }} />
+      <ProductDetails params={{ id: "" }} />
     </div>
   );
 }

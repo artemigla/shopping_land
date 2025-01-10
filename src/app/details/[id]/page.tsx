@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { BASE_URL } from "@/app/components/api/api";
 import { Product } from "@/app/interfaces/Interface";
-import Image from "next/image";
 
 export default function ProductDetails({
   params,
@@ -25,8 +25,6 @@ export default function ProductDetails({
     fetchData();
   }, [params]);
 
-  const productId = state?.title;
-
   return (
     <div className="ml-auto mr-auto w-[90%]">
       <div className="grid-[1fr 3fr] grid grid-cols-3">
@@ -40,7 +38,7 @@ export default function ProductDetails({
               }
               alt={state?.title || ""}
               width={320}
-              height={320}
+              height={300}
               className="w-auto"
             />
           ) : (
@@ -48,7 +46,7 @@ export default function ProductDetails({
           )}
         </div>
         <div className="mt-3">
-          <div className="font-bold">{`${productId || "Loading..."}`}</div>
+          <div className="font-bold">{state?.title}</div>
           <p>{state?.brand}</p>
           <p>{state?.category}</p>
           <p>{state?.warrantyInformation}</p>
